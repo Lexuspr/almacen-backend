@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Signin</title>
+
+    <meta name="google-signin-client_id" content="604676686893-4ho9h3rqhbk4kf3fjhp8vpqfq8c6qj5k.apps.googleusercontent.com">
+
+</head>
+<body>
+
+    <h1>Google Signin</h1>
+    <hr>
+
+    <div id="g_id_onload"
+         data-client_id="604676686893-4ho9h3rqhbk4kf3fjhp8vpqfq8c6qj5k.apps.googleusercontent.com"
+         data-callback="onSignIn">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <a href="#" onclick="signOut();">Sign out</a>
+
+    <script>
+
+        console.log(window.location.hostname.includes('localhost'))
+
+        var url = ( window.location.hostname.includes('localhost') )
+                    ? 'http://localhost:5000/api/auth/google'
+                    : 'https://restserver-curso-fher.herokuapp.com/api/auth/google';
+
+
+        function onSignIn(credentialResponse) {
+
+            var profile = parseJWT(credentialResponse.credential)
+            console.log('ID: ' + profile.sub); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.name);
+            console.log('Image URL: ' + profile.picture);
+            console.log('Email: ' + profile.email); // This is null if the 'email' scope is not present.
+
+            var id_token = credentialResponse.credential;
+            const data = { id_token };
+
+            fetch( url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify( data )
+            })
+            .then( resp => resp.json() )
+            .then( data => console.log( 'Nuestro server', data ) )
+            .catch( err => console.log(err) );
+            
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
+        }
+
+        function parseJWT(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace('-', '+').replace('_', '/');
+            return JSON.parse(window.atob(base64));
+        };
+        
+    </script>
+
+</body>
+</html>
