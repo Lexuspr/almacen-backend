@@ -1,14 +1,15 @@
 import Bus from '../models/bus.js'
 import Category from '../models/category.js'
 import Product from '../models/product.js'
-import Role from '../models/role.js'
+import Rol from '../models/rol.js'
 import User from '../models/user.js'
 
-const isRoleValid = async (role = 'USER_ROLE') => {
-    const existRole = await Role.findOne({ role })
-    if (!existRole) {
-        throw new Error(`El rol ${role} no se encuentra registrado en la BD`)
-    }
+const isRolValid = async (rol = 'USER_ROLE') => {
+    Rol.findByNombre(rol, (err, rol) => {
+        if (!rol) {
+            throw new Error(`El rol ${rol} no se encuentra registrado en la BD`)
+        }
+    })
 }
 
 const emailExists = async (email = '') => {
@@ -66,7 +67,7 @@ const validCollections = (collection = '', collections = []) => {
 }
 
 export {
-    isRoleValid,
+    isRolValid,
     emailExists,
     userExistsById,
     placaExists,
