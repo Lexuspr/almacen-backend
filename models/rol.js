@@ -1,3 +1,5 @@
+import { pool } from "../database/mysql.js"
+
 const Rol = rol => {
     this.nombre = rol.nombre
 }

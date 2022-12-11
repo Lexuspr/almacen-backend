@@ -4,10 +4,10 @@ import Product from '../models/product.js'
 import Rol from '../models/rol.js'
 import User from '../models/user.js'
 
-const isRolValid = async (rol = 'USER_ROLE') => {
-    Rol.findByNombre(rol, (err, rol) => {
+const isRolValid = async (nombre = 'USER_ROLE') => {
+    Rol.findByNombre(nombre, (err, rol) => {
         if (!rol) {
-            throw new Error(`El rol ${rol} no se encuentra registrado en la BD`)
+            throw new Error(`El rol ${nombre} no se encuentra registrado en la BD`)
         }
     })
 }
