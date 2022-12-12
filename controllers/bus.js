@@ -5,7 +5,7 @@ import User from '../models/user.js'
 const getBuses = async (req, res = response) => {
     const { limit = 50, from = 0 } = req.query
 
-    Bus.getBuses({ limit, from }, async (err, buses) => {
+    Bus.findAll({ limit, from }, async (err, buses) => {
         if (err) {
             return res.status(500).json({
                 msg: 'Error al buscar los buses'

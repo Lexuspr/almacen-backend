@@ -19,7 +19,7 @@ app.use(express.static('public'))
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
-app.use('api/buses', busRoutes)
+app.use('/api/buses', busRoutes)
 //app.use('/api/products', productRoutes)
 //app.use('/api/categories', categoryRoutes)
 
